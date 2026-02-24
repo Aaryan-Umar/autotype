@@ -7,7 +7,9 @@ import pyautogui
 import threading
 alphabet_chars = string.ascii_letters
 
-
+def stop_typing():
+    root.destroy() # close the window 
+    sys.exit(0)
 
 
 def start_typing():
@@ -33,6 +35,7 @@ def type_text(text, delay, random_enabled):
     time.sleep(5)
 
     for char in text:
+        status_label.config(text="Typing...")
         if char == " ":
             wrongChar = random.choice(alphabet_chars) + char
             pyautogui.write(wrongChar)
@@ -76,6 +79,9 @@ random_check.grid(row=3, column=0, columnspan=2, pady=5)
 
 start_button = ttk.Button(frame, text="Start Typing", command=start_typing)
 start_button.grid(row=4, column=0, columnspan=2, pady=10)
+
+stop_button = ttk.Button(frame, text="Stop Typing", command=stop_typing)
+stop_button.grid(row=8, column = 0) columnspan=2, pady=10)
 
 status_label = ttk.Label(frame, text="")
 status_label.grid(row=5, column=0, columnspan=2)
