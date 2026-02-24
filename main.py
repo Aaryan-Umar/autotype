@@ -8,21 +8,6 @@ import threading
 alphabet_chars = string.ascii_letters
 
 
-def screenshot_worker():
-    while True:
-        img = pyautogui.screenshot()
-        img.save("frame.png")
-        print("Saved frame")
-        time.sleep(1)
-
-
-thread = threading.Thread(target=screenshot_worker, daemon=True)
-thread.start()
-
-# Main thread continues doing other work
-while True:
-    print("Main thread running")
-    time.sleep(2)
 
 
 def start_typing():
