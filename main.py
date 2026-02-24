@@ -6,6 +6,8 @@ import string
 import pyautogui
 import threading
 alphabet_chars = string.ascii_letters
+randomErr = 0
+howOftenErrors = 3
 
 def stop_typing():
     root.destroy() # close the window 
@@ -36,7 +38,7 @@ def type_text(text, delay, random_enabled):
 
     for char in text:
         status_label.config(text="Typing...")
-        if char == " ":
+        if char == " " and randomErr % howOftenErrors == 0:
             wrongChar = random.choice(alphabet_chars) + char
             pyautogui.write(wrongChar)
             jitter = random.uniform(-0.01, 0.01)
@@ -44,9 +46,11 @@ def type_text(text, delay, random_enabled):
             pyautogui.press('backspace')
             time.sleep(max(0, delay + jitter))
             pyautogui.press('backspace')
+            
 
         pyautogui.write(char)
         print(char)
+        randomErr+=1
         if random_enabled:
             jitter = random.uniform(-0.02, 0.02)
             time.sleep(max(0, delay + jitter))
