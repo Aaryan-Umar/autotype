@@ -9,5 +9,7 @@ time
 
 use this for packaging
 
-
-pyinstaller --onefile --noconsole --clean --icon=icon.ico main.py
+python -m pip install pyautogui
+python -m pip install pyinstaller
+python -m PyInstaller 
+pyinstaller --onefile --noconsole --clean --icon=autotype.ico ai_main.py
