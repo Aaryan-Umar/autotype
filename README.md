@@ -10,4 +10,4 @@ time
 use this for packaging
 
 
-pyinstaller --onefile --noconsole main.py
+pyinstaller --onefile --noconsole --clean --icon=icon.ico main.py
