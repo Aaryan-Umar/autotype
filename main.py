@@ -5,9 +5,8 @@ import random
 import string
 import pyautogui
 import threading
+import sys
 alphabet_chars = string.ascii_letters
-randomErr = 0
-howOftenErrors = 3
 
 def stop_typing():
     root.destroy() # close the window 
@@ -15,6 +14,17 @@ def stop_typing():
 
 
 def start_typing():
+    global ranDelay
+    try:
+        ranDelay = float(entry1.get())
+        print("Delay:", ranDelay)
+    except ValueError:
+        print("Please enter a valid number")
+        sys.exit(0)
+    if not ranDelay:
+        ranDelay = 0
+    print("Delay wanted:", ranDelay)
+    
     text = text_box.get("1.0", tk.END).rstrip()
     try:
         rpm = int(rpm_entry.get())
@@ -32,16 +42,22 @@ def start_typing():
 
 
 def type_text(text, delay, random_enabled):
+    
     status_label.config(
         text="Starting in 5 seconds… click into your target window")
     time.sleep(5)
-
+    randomErr = 1
+    howOftenErrors = random.randint(4, 9)
+    if randomErr > howOftenErrors:
+        randomErr = howOftenErrors
     for char in text:
         status_label.config(text="Typing...")
         if char == " " and randomErr % howOftenErrors == 0:
+            howOftenErrors = random.randint(4, 9)
+            randomErr = 1
             wrongChar = random.choice(alphabet_chars) + char
             pyautogui.write(wrongChar)
-            jitter = random.uniform(-0.01, 0.01)
+            jitter = random.uniform(-0.03, 0.03)
             time.sleep(max(0, delay + jitter))
             pyautogui.press('backspace')
             time.sleep(max(0, delay + jitter))
@@ -52,7 +68,9 @@ def type_text(text, delay, random_enabled):
         print(char)
         randomErr+=1
         if random_enabled:
-            jitter = random.uniform(-0.02, 0.02)
+            jitter = random.uniform(-ranDelay, ranDelay)
+            #          time.sleep(max(0, delay + jitter))
+
             time.sleep(max(0, delay + jitter))
         else:
             time.sleep(delay)
@@ -71,6 +89,15 @@ ttk.Label(frame, text="Text to type:").grid(row=0, column=0, sticky="w")
 text_box = tk.Text(frame, width=50, height=10)
 text_box.grid(row=1, column=0, columnspan=2, pady=5)
 
+
+tk.Label(frame, text="Delay wanted betweeen characters (limits wpm, values usually from 0.1 to 1 (s))").grid(row=0, column=0)
+
+entry1 = tk.Entry(frame)
+
+entry1.grid(row=0, column=1)
+
+
+
 ttk.Label(frame, text="Characters per minute (RPM):").grid(
     row=2, column=0, sticky="w")
 rpm_entry = ttk.Entry(frame)
@@ -85,7 +112,7 @@ start_button = ttk.Button(frame, text="Start Typing", command=start_typing)
 start_button.grid(row=4, column=0, columnspan=2, pady=10)
 
 stop_button = ttk.Button(frame, text="Stop Typing", command=stop_typing)
-stop_button.grid(row=8, column = 0) columnspan=2, pady=10)
+stop_button.grid(row=8, column = 0, columnspan=2, pady=10)
 
 status_label = ttk.Label(frame, text="")
 status_label.grid(row=5, column=0, columnspan=2)
