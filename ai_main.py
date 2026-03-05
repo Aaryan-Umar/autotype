@@ -136,7 +136,6 @@ class AutoTyperApp:
             time.sleep(1)
 
         alphabet = string.ascii_letters
-
         self.update_status("Typing...")
 
         for char in text:
@@ -147,8 +146,10 @@ class AutoTyperApp:
             # Simulate typo
             if self.typo_var.get() and random.random() < 0.03 and char != " ":
                 wrong = random.choice(alphabet)
+                typoDelay = random.random(0.3, 0.6)
+
                 pyautogui.write(wrong)
-                time.sleep(0.1)
+                time.sleep(typoDelay)
                 pyautogui.press("backspace")
 
             pyautogui.write(char)
