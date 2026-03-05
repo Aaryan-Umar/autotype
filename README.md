@@ -9,6 +9,10 @@ time
 
 use this for packaging
 
+TO DO
+REPACKAGE ai_main.py because of the upgraded typo delay
+Better UI
+
 python -m pip install pyautogui
 python -m pip install pyinstaller
 python -m PyInstaller 
